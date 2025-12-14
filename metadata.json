@@ -1,0 +1,5 @@
+{
+  "name": "StreamFlow IPTV",
+  "description": "A modern, responsive IPTV player with M3U parsing capabilities, featuring a dark UI and HLS streaming support.",
+  "requestFramePermissions": []
+}
