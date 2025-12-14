@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Channel } from '../types';
 
-
 interface SidebarProps {
   channels: Channel[];
   currentChannel: Channel | null;

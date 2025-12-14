@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { apiService } from '../src/services/api';
+import { storageService } from '../services/storage';
 import { User } from '../types';
-
 
 interface LoginProps {
   onLogin: (user: User) => void;
@@ -11,19 +10,15 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
-    try {
-        const user = await apiService.login(username, password);
-        onLogin(user);
-    } catch (err: any) {
-        setError(err.message);
-    } finally {
-        setLoading(false);
+    const user = storageService.login(username, password);
+    if (user) {
+      onLogin(user);
+    } else {
+      setError('Invalid username or password');
     }
   };
 
@@ -31,11 +26,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     <div className="min-h-screen flex items-center justify-center bg-gray-900 p-4">
       <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-2xl p-8 border border-gray-700">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-900/50">
-            <i className="fas fa-server text-2xl text-white"></i>
+          <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-900/50">
+            <i className="fas fa-user-lock text-2xl text-white"></i>
           </div>
-          <h2 className="text-2xl font-bold text-white">Xtream Panel Login</h2>
-          <p className="text-gray-400 mt-2">Access your VPS StreamFlow</p>
+          <h2 className="text-2xl font-bold text-white">StreamFlow Login</h2>
+          <p className="text-gray-400 mt-2">Enter your credentials to access</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -45,7 +40,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-600 rounded-md px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full bg-gray-900 border border-gray-600 rounded-md px-4 py-3 text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+              placeholder="e.g. admin"
               required
             />
           </div>
@@ -56,7 +52,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-600 rounded-md px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full bg-gray-900 border border-gray-600 rounded-md px-4 py-3 text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+              placeholder="••••••••"
               required
             />
           </div>
@@ -70,15 +67,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-md transition-colors shadow-lg disabled:opacity-50"
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-md transition-colors shadow-lg"
           >
-            {loading ? 'Authenticating...' : 'Sign In'}
+            Sign In
           </button>
         </form>
         
         <div className="mt-6 text-center text-xs text-gray-600">
-          First login: admin / admin
+          Default Admin: admin / 123
         </div>
       </div>
     </div>
