@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 
+
 interface VideoPlayerProps {
   url: string;
   poster?: string | null;
