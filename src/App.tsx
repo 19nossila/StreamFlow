@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Channel, PlaylistData, User } from './types';
 import { parseM3U } from './services/m3uParser';
-import { apiService } from './src/services/api';
+import { apiService } from './services/api'; // Changed from storageService
 import VideoPlayer from './components/VideoPlayer';
 import Sidebar from './components/Sidebar';
 import Login from './components/Login';
